@@ -1,0 +1,1666 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Curso TBL — Topo de Bolo | Giselle Garcia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet" />
+  <style>
+    /* ── TOKENS ───────────────────────────────────────────── */
+    :root {
+      --cream:   #FDF8F4;
+      --blush:   #F2D4CB;
+      --blush2:  #E8B4A8;
+      --rose:    #C97A82;
+      --mauve:   #8B4F5A;
+      --mauve2:  #6B3540;
+      --gold:    #C9A96E;
+      --gold2:   #A8844A;
+      --dark:    #2C1B1E;
+      --dark2:   #1A0F11;
+      --white:   #FFFFFF;
+      --gray:    #6B5B5E;
+
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body:    'Lato', 'Helvetica Neue', sans-serif;
+
+      --max-w: 1100px;
+      --section-pad: clamp(60px, 8vw, 110px) clamp(20px, 5vw, 60px);
+    }
+
+    /* ── RESET ────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--dark);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.5;
+    }
+
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── UTILITIES ────────────────────────────────────────── */
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 clamp(16px, 4vw, 40px); }
+
+    .gold-line {
+      display: block;
+      width: 80px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 0 auto;
+    }
+
+    .gold-ornament {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      justify-content: center;
+      margin: 16px 0 32px;
+    }
+    .gold-ornament span { width: 60px; height: 1px; background: var(--gold); }
+    .gold-ornament i { color: var(--gold); font-size: 14px; }
+
+    /* ── CTA BUTTON ───────────────────────────────────────── */
+    .btn {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--rose), var(--mauve));
+      color: var(--white);
+      font-family: var(--font-body);
+      font-weight: 900;
+      font-size: clamp(14px, 2vw, 16px);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 18px 44px;
+      border-radius: 60px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 30px rgba(139, 79, 90, 0.35);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--mauve), var(--rose));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .btn:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(139,79,90,0.45); border-color: var(--gold); }
+    .btn:hover::after { opacity: 1; }
+    .btn span { position: relative; z-index: 1; }
+
+    .btn-hero {
+      font-size: clamp(15px, 2.2vw, 18px);
+      padding: 22px 56px;
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 8px 30px rgba(139,79,90,0.35); }
+      50% { box-shadow: 0 8px 50px rgba(139,79,90,0.6), 0 0 0 8px rgba(201,122,130,0.15); }
+    }
+
+    .cta-center { text-align: center; margin-top: 48px; }
+
+    /* ── FADE-IN SCROLL ANIMATION ─────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── SECTION LABELS ───────────────────────────────────── */
+    .section-tag {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold2);
+      margin-bottom: 14px;
+    }
+
+    /* ── IMAGE / VIDEO PLACEHOLDER ────────────────────────── */
+    .img-placeholder {
+      background: linear-gradient(135deg, var(--blush) 0%, #e8c4bc 100%);
+      border: 1.5px dashed var(--blush2);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: var(--rose);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    .img-placeholder svg { width: 36px; height: 36px; opacity: 0.6; }
+
+    .video-placeholder {
+      background: linear-gradient(135deg, var(--dark) 0%, var(--dark2) 100%);
+      border: 2px solid var(--gold);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      color: var(--gold);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      box-shadow: 0 0 40px rgba(201,169,110,0.15);
+    }
+    .play-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: 2.5px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .play-icon svg { width: 28px; height: 28px; fill: var(--gold); margin-left: 4px; }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       1. HERO
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .hero {
+      background: linear-gradient(160deg, #fff9f6 0%, var(--blush) 50%, #f0cec8 100%);
+      padding: clamp(60px, 9vw, 120px) clamp(20px, 5vw, 60px);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -120px; right: -120px;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,169,110,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -80px;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(139,79,90,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-logo {
+      font-family: var(--font-display);
+      font-size: clamp(13px, 2vw, 15px);
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--mauve);
+      margin-bottom: 32px;
+    }
+    .hero-logo span { color: var(--gold2); }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 5.5vw, 64px);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--dark);
+      max-width: 860px;
+      margin: 0 auto 24px;
+    }
+    .hero h1 em { color: var(--mauve); font-style: italic; }
+
+    .hero-sub {
+      font-size: clamp(16px, 2.2vw, 20px);
+      color: var(--gray);
+      max-width: 680px;
+      margin: 0 auto 32px;
+      line-height: 1.65;
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin: 0 auto 40px;
+    }
+    .hero-badge {
+      background: var(--white);
+      border: 1.5px solid var(--gold);
+      color: var(--mauve2);
+      font-weight: 700;
+      font-size: clamp(11px, 1.4vw, 13px);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 10px 22px;
+      border-radius: 60px;
+    }
+
+    .hero-video {
+      max-width: 700px;
+      margin: 48px auto 48px;
+      aspect-ratio: 16/9;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       2. TRUST ICONS
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .trust {
+      background: var(--white);
+      padding: clamp(40px, 5vw, 70px) clamp(20px, 5vw, 60px);
+      border-top: 3px solid var(--blush);
+      border-bottom: 3px solid var(--blush);
+    }
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      max-width: 860px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    @media (max-width: 600px) { .trust-grid { grid-template-columns: 1fr; gap: 28px; } }
+
+    .trust-item { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+    .trust-icon {
+      width: 68px; height: 68px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blush), var(--blush2));
+      display: flex; align-items: center; justify-content: center;
+    }
+    .trust-icon svg { width: 30px; height: 30px; stroke: var(--mauve); fill: none; stroke-width: 1.8; }
+    .trust-item h3 {
+      font-family: var(--font-display);
+      font-size: clamp(16px, 2vw, 19px);
+      font-weight: 600;
+      color: var(--dark);
+    }
+    .trust-item p { font-size: 14px; color: var(--gray); max-width: 200px; margin: 0 auto; }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       3. O MERCADO MUDOU
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .market {
+      padding: var(--section-pad);
+      background: var(--cream);
+      text-align: center;
+    }
+    .section-h2 {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 4.5vw, 52px);
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--dark);
+      margin-bottom: 20px;
+    }
+    .section-h2 em { color: var(--rose); font-style: italic; }
+
+    .market-body {
+      max-width: 760px;
+      margin: 0 auto 48px;
+      font-size: clamp(15px, 1.8vw, 18px);
+      color: var(--gray);
+      line-height: 1.8;
+    }
+    .market-body p { margin-bottom: 16px; }
+    .market-body strong { color: var(--mauve); font-weight: 700; }
+
+    .img-grid-10 {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+      max-width: 900px;
+      margin: 0 auto 48px;
+    }
+    @media (max-width: 900px) { .img-grid-10 { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 500px) { .img-grid-10 { grid-template-columns: repeat(2, 1fr); } }
+
+    .img-grid-10 .img-placeholder { aspect-ratio: 1; }
+
+    .modelo-card {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      aspect-ratio: 1;
+      box-shadow: 0 4px 18px rgba(44,27,30,.18);
+      cursor: default;
+    }
+    .modelo-card img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform .4s ease;
+    }
+    .modelo-card:hover img { transform: scale(1.06); }
+    .modelo-card span {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(to top, rgba(44,27,30,.82) 0%, transparent 100%);
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: clamp(10px, 1.5vw, 13px);
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-align: center;
+      padding: 22px 8px 8px;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       4. HISTÓRIA
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .story {
+      background: linear-gradient(160deg, var(--mauve2) 0%, var(--mauve) 100%);
+      padding: var(--section-pad);
+      color: var(--white);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .story::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='28' fill='none' stroke='rgba(201,169,110,0.08)' stroke-width='1'/%3E%3C/svg%3E") repeat;
+      pointer-events: none;
+    }
+
+    .story-inner { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
+    .story .section-tag { color: var(--gold); }
+    .story .section-h2 { color: var(--white); }
+    .story .section-h2 em { color: var(--gold); }
+
+    .story-text {
+      font-size: clamp(15px, 1.8vw, 18px);
+      line-height: 1.85;
+      color: rgba(255,255,255,0.88);
+      text-align: left;
+      margin: 32px 0;
+    }
+    .story-text p { margin-bottom: 18px; }
+    .story-text strong { color: var(--gold); font-weight: 700; }
+
+    .story-callout {
+      font-family: var(--font-display);
+      font-size: clamp(20px, 3.5vw, 36px);
+      font-weight: 700;
+      font-style: italic;
+      color: var(--gold);
+      text-align: center;
+      margin: 40px 0;
+      padding: 24px 32px;
+      border-left: 3px solid var(--gold);
+      border-right: 3px solid var(--gold);
+    }
+
+    .next-cta {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 3.5vw, 38px);
+      font-weight: 700;
+      color: var(--gold);
+      text-align: center;
+      margin: 28px 0 36px;
+      letter-spacing: 0.02em;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       5. PROVA SOCIAL
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .social-proof {
+      padding: var(--section-pad);
+      background: var(--cream);
+      text-align: center;
+    }
+    .img-grid-9 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      max-width: 840px;
+      margin: 0 auto 48px;
+    }
+    @media (max-width: 600px) { .img-grid-9 { grid-template-columns: repeat(2, 1fr); } }
+    .img-grid-9 .img-placeholder { aspect-ratio: 1; }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       6. PARA QUEM É
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .for-who {
+      background: var(--white);
+      padding: var(--section-pad);
+      text-align: center;
+    }
+    .checklist {
+      max-width: 680px;
+      margin: 0 auto 48px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      font-size: clamp(15px, 1.8vw, 17px);
+      color: var(--dark);
+      line-height: 1.5;
+      padding: 14px 20px;
+      background: var(--cream);
+      border-radius: 10px;
+      border-left: 3px solid var(--gold);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .checklist-item:hover { transform: translateX(4px); box-shadow: 4px 0 16px rgba(201,169,110,0.15); }
+    .check-icon {
+      width: 24px; height: 24px; min-width: 24px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 1px;
+    }
+    .check-icon svg { width: 13px; height: 13px; stroke: white; fill: none; stroke-width: 2.5; }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       7. MÓDULOS
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .modules {
+      padding: var(--section-pad);
+      background: var(--cream);
+      text-align: center;
+    }
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto 48px;
+    }
+    @media (max-width: 800px) { .modules-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .modules-grid { grid-template-columns: 1fr; } }
+
+    .module-card {
+      background: var(--white);
+      border: 1.5px solid var(--blush);
+      border-radius: 16px;
+      padding: 28px 22px;
+      text-align: left;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .module-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--rose), var(--gold));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+    .module-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(139,79,90,0.12); border-color: var(--rose); }
+    .module-card:hover::before { transform: scaleX(1); }
+
+    .module-num {
+      font-family: var(--font-display);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: var(--gold2);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .module-card h3 {
+      font-family: var(--font-display);
+      font-size: clamp(16px, 2vw, 19px);
+      font-weight: 700;
+      color: var(--mauve2);
+      margin-bottom: 10px;
+    }
+    .module-card p { font-size: 14px; color: var(--gray); line-height: 1.6; }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       8. BÔNUS + PREÇO
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .bonus {
+      background: linear-gradient(160deg, var(--dark2) 0%, var(--dark) 100%);
+      padding: var(--section-pad);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .bonus::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px; height: 800px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,169,110,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .bonus-inner { position: relative; z-index: 1; }
+    .bonus .section-tag { color: var(--gold); }
+    .bonus .section-h2 { color: var(--white); }
+
+    /* ── PRICING CARD ────────────────────────────────────── */
+    .pricing-card {
+      max-width: 480px;
+      margin: 36px auto 0;
+      background: var(--white);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+    }
+    .pricing-card-logo {
+      background: var(--cream);
+      border-bottom: 2px solid var(--blush);
+      padding: 22px 32px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 72px;
+    }
+    .pricing-card-logo span {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--mauve2);
+      letter-spacing: 0.06em;
+    }
+    .pricing-card-logo span em { color: var(--gold2); font-style: italic; }
+    .pricing-card-header {
+      background: linear-gradient(135deg, var(--mauve2), var(--mauve));
+      padding: 14px 32px;
+      text-align: center;
+    }
+    .pricing-card-header h3 {
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .pricing-items {
+      list-style: none;
+      padding: 20px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .pricing-items li {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 11px 0;
+      border-bottom: 1px solid #f0e8e5;
+      font-size: clamp(13px, 1.5vw, 14px);
+      color: var(--dark);
+      line-height: 1.4;
+    }
+    .pricing-items li:last-child { border-bottom: none; }
+    .pricing-item-name { display: flex; align-items: baseline; gap: 9px; }
+    .pricing-check { color: #28a745; font-size: 15px; flex-shrink: 0; }
+    .pricing-price {
+      color: var(--gray);
+      font-size: 12px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .pricing-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--blush2), transparent);
+      margin: 0 28px;
+    }
+    .pricing-total {
+      padding: 22px 28px 8px;
+      text-align: center;
+    }
+    .pricing-total-was {
+      font-size: 14px;
+      color: var(--gray);
+      text-decoration: line-through;
+      margin-bottom: 6px;
+    }
+    .pricing-total-main {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 4vw, 32px);
+      font-weight: 900;
+      color: var(--mauve2);
+      line-height: 1.1;
+    }
+    .pricing-total-or {
+      font-size: 13px;
+      color: var(--gray);
+      margin: 10px 0 4px;
+    }
+    .pricing-total-cash {
+      font-size: clamp(16px, 2.5vw, 20px);
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 22px;
+    }
+    .pricing-card .btn {
+      display: block;
+      margin: 0 28px 28px;
+      text-align: center;
+      border-radius: 10px;
+      padding: 16px 28px;
+    }
+
+    /* ── GARANTIA SEAL ───────────────────────────────────── */
+    .garantia-seal-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 36px;
+    }
+    .garantia-seal {
+      position: relative;
+      width: 160px;
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* starburst via clip-path */
+    .garantia-seal-bg {
+      position: absolute;
+      inset: 0;
+      background: conic-gradient(
+        var(--gold) 0deg, #e8c87a 10deg,
+        var(--gold) 20deg, #e8c87a 30deg,
+        var(--gold) 40deg, #e8c87a 50deg,
+        var(--gold) 60deg, #e8c87a 70deg,
+        var(--gold) 80deg, #e8c87a 90deg,
+        var(--gold) 100deg, #e8c87a 110deg,
+        var(--gold) 120deg, #e8c87a 130deg,
+        var(--gold) 140deg, #e8c87a 150deg,
+        var(--gold) 160deg, #e8c87a 170deg,
+        var(--gold) 180deg, #e8c87a 190deg,
+        var(--gold) 200deg, #e8c87a 210deg,
+        var(--gold) 220deg, #e8c87a 230deg,
+        var(--gold) 240deg, #e8c87a 250deg,
+        var(--gold) 260deg, #e8c87a 270deg,
+        var(--gold) 280deg, #e8c87a 290deg,
+        var(--gold) 300deg, #e8c87a 310deg,
+        var(--gold) 320deg, #e8c87a 330deg,
+        var(--gold) 340deg, #e8c87a 350deg,
+        var(--gold) 360deg
+      );
+      clip-path: polygon(
+        50% 0%, 56% 8%, 65% 3%, 68% 12%, 78% 10%, 78% 20%,
+        88% 22%, 85% 32%, 95% 37%, 89% 46%, 98% 54%, 90% 60%,
+        96% 70%, 86% 73%, 89% 84%, 78% 84%, 78% 95%, 68% 92%,
+        63% 100%, 55% 95%, 50% 100%, 45% 95%, 37% 100%, 32% 92%,
+        22% 95%, 22% 84%, 11% 84%, 14% 73%, 4% 70%, 10% 60%,
+        2% 54%, 11% 46%, 5% 37%, 15% 32%, 12% 22%, 22% 20%,
+        22% 10%, 32% 12%, 35% 3%, 44% 8%
+      );
+      border-radius: 50%;
+    }
+    .garantia-seal-inner {
+      position: relative;
+      width: 118px;
+      height: 118px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 35%, #1a2a4a 0%, #0d1a30 100%);
+      border: 3px solid var(--gold);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
+      z-index: 1;
+    }
+    .seal-top-text {
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 2px;
+    }
+    .seal-number {
+      font-family: var(--font-display);
+      font-size: 46px;
+      font-weight: 900;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .seal-dias {
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(201,169,110,0.85);
+    }
+    .seal-bottom-text {
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-top: 2px;
+    }
+
+    .garantia-text-block {
+      max-width: 520px;
+      margin: 32px auto 0;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(201,169,110,0.25);
+      border-radius: 16px;
+      padding: 28px 32px;
+      text-align: left;
+    }
+    .garantia-text-block h4 {
+      font-family: var(--font-display);
+      font-size: clamp(18px, 2.5vw, 22px);
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+    .garantia-text-block p {
+      font-size: clamp(14px, 1.6vw, 15px);
+      color: rgba(255,255,255,0.75);
+      line-height: 1.75;
+      margin-bottom: 12px;
+    }
+    .garantia-text-block p:last-child { margin-bottom: 0; }
+    .garantia-text-block strong { color: var(--white); font-weight: 700; }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       9. IMPÉRIO
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .empire {
+      padding: var(--section-pad);
+      background: var(--cream);
+      text-align: center;
+    }
+    .empire-text {
+      max-width: 720px;
+      margin: 0 auto 48px;
+      font-size: clamp(16px, 1.9vw, 18px);
+      color: var(--gray);
+      line-height: 1.8;
+    }
+    .videos-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      max-width: 820px;
+      margin: 0 auto 48px;
+    }
+    @media (max-width: 600px) { .videos-grid { grid-template-columns: 1fr; } }
+    .videos-grid .video-placeholder { aspect-ratio: 16/9; }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       10. GARANTIA
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .guarantee {
+      background: var(--white);
+      padding: var(--section-pad);
+    }
+    .guarantee-inner {
+      max-width: 740px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 48px;
+    }
+    @media (max-width: 650px) { .guarantee-inner { flex-direction: column; text-align: center; } }
+
+    .guarantee-badge {
+      min-width: 160px;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--mauve), var(--rose));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 16px 40px rgba(139,79,90,0.3);
+      flex-shrink: 0;
+    }
+    .guarantee-badge .badge-days {
+      font-family: var(--font-display);
+      font-size: 48px;
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1;
+    }
+    .guarantee-badge .badge-text { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.85); }
+
+    .guarantee-content h2 {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 3vw, 32px);
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 14px;
+    }
+    .guarantee-content p { font-size: clamp(15px, 1.7vw, 17px); color: var(--gray); line-height: 1.75; }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       11. QUEM SOU EU
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .about {
+      background: linear-gradient(160deg, var(--blush) 0%, var(--cream) 60%);
+      padding: var(--section-pad);
+      text-align: center;
+    }
+    .about-photo {
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      margin: 0 auto 32px;
+      border: 4px solid var(--gold);
+      box-shadow: 0 16px 40px rgba(139,79,90,0.2);
+      overflow: hidden;
+    }
+    .about-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .about-name {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 3.5vw, 38px);
+      font-weight: 700;
+      color: var(--mauve2);
+      margin-bottom: 8px;
+    }
+    .about-title { font-size: 13px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold2); margin-bottom: 28px; }
+
+    .about-bio {
+      max-width: 720px;
+      margin: 0 auto;
+      font-size: clamp(15px, 1.8vw, 17px);
+      color: var(--gray);
+      line-height: 1.85;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       12. FAQ
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .faq {
+      padding: var(--section-pad);
+      background: var(--white);
+      text-align: center;
+    }
+    .faq-list {
+      max-width: 720px;
+      margin: 40px auto 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      text-align: left;
+    }
+    .faq-item {
+      border: 1.5px solid var(--blush);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+    .faq-item.open { border-color: var(--rose); }
+    .faq-q {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 22px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: clamp(14px, 1.7vw, 16px);
+      color: var(--dark);
+      background: var(--cream);
+      user-select: none;
+      transition: background 0.2s ease;
+    }
+    .faq-item.open .faq-q { background: var(--blush); color: var(--mauve2); }
+    .faq-icon {
+      width: 24px; height: 24px; min-width: 24px;
+      border-radius: 50%;
+      background: var(--rose);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.3s ease;
+    }
+    .faq-item.open .faq-icon { transform: rotate(45deg); background: var(--mauve2); }
+    .faq-icon svg { width: 12px; height: 12px; stroke: white; fill: none; stroke-width: 2.5; }
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s ease;
+      font-size: clamp(14px, 1.6vw, 16px);
+      color: var(--gray);
+      line-height: 1.7;
+      padding: 0 22px;
+      background: var(--white);
+    }
+    .faq-item.open .faq-a { max-height: 300px; padding: 18px 22px; }
+    .faq-a p { font-style: italic; color: var(--blush2); }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       13. CTA FINAL + FOOTER
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .final-cta {
+      background: linear-gradient(160deg, var(--mauve2) 0%, var(--dark) 100%);
+      padding: var(--section-pad);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .final-cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(201,169,110,0.15) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .final-cta-inner { position: relative; z-index: 1; }
+    .final-cta .section-h2 { color: var(--white); }
+    .final-cta .section-h2 em { color: var(--gold); }
+
+    .price-block {
+      max-width: 460px;
+      margin: 36px auto 40px;
+      background: rgba(255,255,255,0.06);
+      border: 2px solid var(--gold);
+      border-radius: 20px;
+      padding: 36px 32px;
+      text-align: center;
+    }
+    .price-was {
+      font-size: 15px;
+      color: rgba(255,255,255,0.5);
+      text-decoration: line-through;
+      margin-bottom: 8px;
+    }
+    .price-main {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 4.5vw, 44px);
+      font-weight: 900;
+      color: var(--gold);
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+    .price-or {
+      font-size: 14px;
+      color: rgba(255,255,255,0.55);
+      margin: 10px 0 6px;
+    }
+    .price-cash {
+      font-size: clamp(18px, 2.8vw, 26px);
+      font-weight: 900;
+      color: var(--white);
+    }
+
+    footer {
+      background: var(--dark2);
+      padding: 28px 20px;
+      text-align: center;
+      font-size: 13px;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.05em;
+    }
+    footer span { color: var(--gold); opacity: 0.7; }
+
+    .drive-callout {
+      display: flex; align-items: center; gap: 28px;
+      background: rgba(201,169,110,0.1); border: 1.5px solid rgba(201,169,110,0.35);
+      border-radius: 20px; padding: 28px 32px; margin: 36px auto 0;
+      max-width: 780px; text-align: left;
+    }
+    .drive-img { width: 140px; min-width: 140px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+    .drive-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 8px; }
+    .drive-text h4 { font-family: var(--font-display); font-size: clamp(16px,2vw,20px); color: var(--white); margin-bottom: 10px; }
+    .drive-text p { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.7; }
+    .drive-text strong { color: var(--gold); }
+    @media (max-width: 600px) {
+      .drive-callout { flex-direction: column; text-align: center; padding: 24px 20px; }
+      .drive-img { width: 100%; min-width: unset; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════════
+       1. HERO
+  ══════════════════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="container">
+      <p class="hero-logo reveal"> <span></span> — Topo de Bolo</p>
+
+      <h1 class="reveal">
+        O Método definitivo para você conseguir ter sua própria
+        <em>renda trabalhando de casa</em>
+        com topos de bolo.
+      </h1>
+
+      <p class="hero-sub reveal">
+        Entenda como muitas mulheres comuns estão se profissionalizando
+        e ganhando de <strong>3 a 5 mil reais</strong> com essa incrível oportunidade de negócio.
+      </p>
+
+      <div class="hero-badges reveal">
+        <span class="hero-badge">✦ Mesmo sem nenhuma experiência</span>
+        <span class="hero-badge">✦ Sem máquina de corte</span>
+        <span class="hero-badge">✦ 100% técnicas manuais</span>
+      </div>
+
+      <div class="hero-video reveal">
+        <iframe
+          src="https://www.youtube.com/embed/N-v29imqc6M"
+          title="Curso TBL 197"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          style="width:100%;height:100%;border-radius:16px;display:block;">
+        </iframe>
+      </div>
+
+      <div class="reveal">
+        <a href="https://go.hotmart.com/K106205895D?ap=075c" target="_blank" rel="noopener" class="btn btn-hero"><span>Quero Começar Agora ›</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       2. TRUST ICONS
+  ══════════════════════════════════════════════════════ -->
+  <section class="trust">
+    <div class="trust-grid">
+      <div class="trust-item reveal">
+        <div class="trust-icon">
+          <!-- Lightning bolt -->
+          <svg viewBox="0 0 24 24"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <h3>Acesso Imediato</h3>
+        <p>Assim que sua compra for confirmada, você receberá o acesso imediatamente.</p>
+      </div>
+      <div class="trust-item reveal">
+        <div class="trust-icon">
+          <!-- Message/WhatsApp icon -->
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h3>Suporte no WhatsApp</h3>
+        <p>Suporte particular no WhatsApp para tirar todas as suas dúvidas.</p>
+      </div>
+      <div class="trust-item reveal">
+        <div class="trust-icon">
+          <!-- Shield/guarantee icon -->
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Garantia de 7 Dias</h3>
+        <p>Caso não esteja satisfeita, nós devolvemos integralmente o valor investido.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       3. O MERCADO MUDOU
+  ══════════════════════════════════════════════════════ -->
+  <section class="market">
+    <div class="container">
+      <span class="section-tag reveal">O cenário mudou</span>
+      <div class="gold-ornament reveal">
+        <span></span><i>✦</i><span></span>
+      </div>
+      <h2 class="section-h2 reveal">O MERCADO MUDOU…</h2>
+      <div class="market-body reveal">
+        <p>E para isso, você precisa estar <strong>pronta para as principais demandas</strong>.</p>
+        <p>Seu cliente quer <strong>profissionalismo e exclusividade</strong>… você não pode saber só uma coisa!</p>
+        <p>Profissional tem que estar preparada para fazer <strong>tudo o que o cliente pede</strong>.</p>
+        <p>Por isso, com o <strong>Curso TBL</strong> você aprende o passo a passo, mesmo estando do absoluto zero, de como criar suas artes, se profissionalizar, se diferenciar dos concorrentes e estar <strong>PREPARADA para fazer e entregar às grandes tendências do momento</strong>.</p>
+      </div>
+
+      <h3 class="reveal" style="font-family:var(--font-display);font-size:clamp(20px,3vw,28px);color:var(--mauve2);margin-bottom:28px;">Modelos que você vai aprender a fazer:</h3>
+
+      <div class="img-grid-10">
+        <div class="modelo-card">
+          <img src="https://webnario.b-cdn.net/Aro%20desconstruido.jpeg" alt="Aro Desconstruído" />
+          <span>Aro Desconstruído</span>
+        </div>
+        <div class="modelo-card">
+          <img src="https://webnario.b-cdn.net/borboletas%20flores%20espirais.jpeg" alt="Borboletas Flores Espirais" />
+          <span>Borboletas Flores Espirais</span>
+        </div>
+        <div class="modelo-card">
+          <img src="https://webnario.b-cdn.net/camadas.jpeg" alt="Camadas" />
+          <span>Camadas</span>
+        </div>
+        <div class="modelo-card">
+          <img src="https://webnario.b-cdn.net/com%20faixa.jpeg" alt="Com Faixa" />
+          <span>Com Faixa</span>
+        </div>
+        <div class="modelo-card">
+          <img src="https://webnario.b-cdn.net/efeito%20shalk.jpeg" alt="Efeito Shalk" />
+          <span>Efeito Shalk</span>
+        </div>
+        <div class="modelo-card">
+          <img src="https://webnario.b-cdn.net/flutuante.jpg" alt="Flutuante" />
+          <span>Flutuante</span>
+        </div>
+        <div class="modelo-card">
+          <img src="https://webnario.b-cdn.net/letras%20em%20camadas.jpeg" alt="Letras em Camadas" />
+          <span>Letras em Camadas</span>
+        </div>
+        <div class="modelo-card">
+          <img src="https://webnario.b-cdn.net/plissado.jpeg" alt="Plissado" />
+          <span>Plissado</span>
+        </div>
+        <div class="modelo-card">
+          <img src="https://webnario.b-cdn.net/Todos%20os%20tipos%20de%20flores.jpeg" alt="Todos os Tipos de Flores" />
+          <span>Todos os Tipos de Flores</span>
+        </div>
+        <div class="modelo-card">
+          <img src="https://webnario.b-cdn.net/Topos%20Basicos.jpg" alt="Topos Básicos" />
+          <span>Topos Básicos</span>
+        </div>
+      </div>
+
+      <div class="cta-center reveal">
+        <a href="https://go.hotmart.com/K106205895D?ap=075c" target="_blank" rel="noopener" class="btn"><span>Quero Aprender Agora ›</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       4. HISTÓRIA
+  ══════════════════════════════════════════════════════ -->
+  <section class="story">
+    <div class="story-inner">
+      <span class="section-tag reveal">A história por trás do método</span>
+      <div class="gold-ornament reveal">
+        <span></span><i style="color:var(--gold)">✦</i><span></span>
+      </div>
+      <h2 class="section-h2 reveal">
+        Se você tem o desejo de trabalhar com papelaria,<br>
+        mas acha que não vai conseguir ganhar dinheiro…
+        <em>EU TE PROVO QUE É POSSÍVEL</em>
+      </h2>
+
+      <div class="story-text reveal">
+        <p>Tudo começou há 10 anos atrás, quando eu descobri que eu estava grávida e de repente tudo mudou. Eu me vi em uma situação complicada, pois na época eu era muito apertada financeiramente. Eu tinha acabado de me casar, não estava nada planejado, morávamos de favor na casa do meu tio e ainda por cima fui <strong>despedida da empresa em que trabalhava</strong>.</p>
+        <p>Eu estava desesperada, no meu limite, porém eu sempre tive um sentimento muito forte que ardia profundamente no meu coração…</p>
+        <p>Eu não queria que a minha filha fosse criada apenas em uma creche, longe de mim, enquanto eu trabalhava fora… Esse sentimento de Mãe de sempre estar por perto, cuidando…</p>
+        <p>Durante esse tempo pensei em várias possibilidades de conseguir fazer uma renda extra, mas todas elas acabaram não dando certo…</p>
+        <p>Passando um tempo, minha filha nasceu e eu estava no desejo de fazer uma festa com lembrancinhas pra ela por conta própria, acabei conhecendo o <strong>mundo da PAPELARIA</strong>…</p>
+        <p>Percebi uma grande oportunidade de ganhar dinheiro, enquanto trabalhava em casa. Em um negócio com <strong>alta margem de lucro</strong> que tinha tendência e ainda tem de crescer exponencialmente ao longo do tempo…</p>
+        <p>Dei a cara a tapa e comecei <strong>DO ZERO</strong> com o mínimo de investimento… E durante esses 10 anos, com erros e acertos, venho desenvolvendo um método único, para poder facilitar e encurtar o tempo de aprendizado desse negócio que me deu LIBERDADE, não só pra mim como para mais de <strong>4.000 alunas</strong> que já aplicaram minha metodologia e hoje têm suas vidas transformadas.</p>
+        <p>Pouco tempo eu já estava tendo minha própria renda, estando perto da minha filha e podendo dar conforto a ela…</p>
+      </div>
+
+      <div class="story-callout reveal">
+        "Em um negócio com alta margem de lucro<br>que tem tendência de crescer exponencialmente."
+      </div>
+
+      <p class="next-cta reveal">VOCÊ PODE SER A PRÓXIMA!</p>
+
+      <div class="reveal">
+        <a href="https://go.hotmart.com/K106205895D?ap=075c" target="_blank" rel="noopener" class="btn"><span>Quero Transformar Minha Vida ›</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       5. PROVA SOCIAL
+  ══════════════════════════════════════════════════════ -->
+  <section class="social-proof">
+    <div class="container">
+      <span class="section-tag reveal">Resultados reais</span>
+      <div class="gold-ornament reveal">
+        <span></span><i>✦</i><span></span>
+      </div>
+      <h2 class="section-h2 reveal">Veja o que nossas alunas<br>são capazes de produzir:</h2>
+
+      <div class="img-grid-9">
+        <div class="modelo-card"><img src="/imagens-alunas/aluna-1.jpg" alt="Trabalho de aluna 1" /></div>
+        <div class="modelo-card"><img src="/imagens-alunas/aluna-2.jpg" alt="Trabalho de aluna 2" /></div>
+        <div class="modelo-card"><img src="/imagens-alunas/aluna-3.jpg" alt="Trabalho de aluna 3" /></div>
+        <div class="modelo-card"><img src="/imagens-alunas/aluna-4.jpg" alt="Trabalho de aluna 4" /></div>
+        <div class="modelo-card"><img src="/imagens-alunas/aluna-5.jpg" alt="Trabalho de aluna 5" /></div>
+        <div class="modelo-card"><img src="/imagens-alunas/aluna-6.jpg" alt="Trabalho de aluna 6" /></div>
+        <div class="modelo-card"><img src="/imagens-alunas/aluna-7.jpg" alt="Trabalho de aluna 7" /></div>
+        <div class="modelo-card"><img src="/imagens-alunas/aluna-8.jpg" alt="Trabalho de aluna 8" /></div>
+        <div class="modelo-card"><img src="/imagens-alunas/aluna-9.jpg" alt="Trabalho de aluna 9" /></div>
+      </div>
+
+      <div class="cta-center reveal">
+        <a href="https://go.hotmart.com/K106205895D?ap=075c" target="_blank" rel="noopener" class="btn"><span>Quero Fazer Parte Disso ›</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       6. PARA QUEM É
+  ══════════════════════════════════════════════════════ -->
+  <section class="for-who">
+    <div class="container">
+      <span class="section-tag reveal">Esse curso é para você?</span>
+      <div class="gold-ornament reveal">
+        <span></span><i>✦</i><span></span>
+      </div>
+      <h2 class="section-h2 reveal">Pra quem é o <em>Curso TBL</em>?</h2>
+
+      <div class="checklist reveal">
+        <div class="checklist-item">
+          <div class="check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          Para você que deseja começar na papelaria sem grandes investimentos.
+        </div>
+        <div class="checklist-item">
+          <div class="check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          Para você que não tem experiência com programas de edição e quer aprender o passo a passo.
+        </div>
+        <div class="checklist-item">
+          <div class="check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          Para você que deseja ter acesso à metodologia mais completa do mercado.
+        </div>
+        <div class="checklist-item">
+          <div class="check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          Pra você que não quer ficar dependendo só de máquinas para fazer as artes.
+        </div>
+        <div class="checklist-item">
+          <div class="check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          Pra você que deseja se profissionalizar na área, mesmo estando do absoluto zero.
+        </div>
+        <div class="checklist-item">
+          <div class="check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          Para você que deseja aprender a precificar os produtos da forma correta.
+        </div>
+        <div class="checklist-item">
+          <div class="check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          Para você que deseja não ficar mais correndo atrás de vídeos aleatórios.
+        </div>
+        <div class="checklist-item">
+          <div class="check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          Para você que deseja saber os materiais corretos para usar.
+        </div>
+        <div class="checklist-item">
+          <div class="check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          Pra você que ainda não tem computador e deseja fazer tudo pelo celular.
+        </div>
+        <div class="checklist-item">
+          <div class="check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          Para você que já trabalha com lembrancinhas e quer aprimorar seu conhecimento, se diferenciando dos concorrentes.
+        </div>
+      </div>
+
+      <div class="cta-center reveal">
+        <a href="https://go.hotmart.com/K106205895D?ap=075c" target="_blank" rel="noopener" class="btn"><span>Sim! Esse Curso é Para Mim ›</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       7. MÓDULOS
+  ══════════════════════════════════════════════════════ -->
+  <section class="modules">
+    <div class="container">
+      <span class="section-tag reveal">Conteúdo completo</span>
+      <div class="gold-ornament reveal">
+        <span></span><i>✦</i><span></span>
+      </div>
+      <h2 class="section-h2 reveal">Tudo o que você vai receber<br><em>dentro do curso:</em></h2>
+
+      <div class="modules-grid">
+        <div class="module-card reveal">
+          <p class="module-num">Módulo 01</p>
+          <h3>O Início</h3>
+          <p>Passo a passo de maneira descomplicada e didática para iniciar do absoluto zero com os materiais que tem em casa.</p>
+        </div>
+        <div class="module-card reveal">
+          <p class="module-num">Módulo 02</p>
+          <h3>Tudo sobre o Studio</h3>
+          <p>Passo a passo de como instalar e utilizar no computador sem dificuldade alguma, mesmo sem dominar informática.</p>
+        </div>
+        <div class="module-card reveal">
+          <p class="module-num">Módulo 03</p>
+          <h3>Criação de Artes Digitais</h3>
+          <p>Aprenda a criar sua própria arte, ter sua identidade visual em cada item produzido, tornando sua marca única.</p>
+        </div>
+        <div class="module-card reveal">
+          <p class="module-num">Módulo 04</p>
+          <h3>Seu Portfólio</h3>
+          <p>Passo a passo completo para ter seus topos de bolo prontos — impressão, recorte e montagem — para divulgar e vender.</p>
+        </div>
+        <div class="module-card reveal">
+          <p class="module-num">Módulo 05</p>
+          <h3>Técnicas Manuais</h3>
+          <p>Aprenda a fazer topos sofisticados usando apenas tesoura e estilete, cortando com precisão profissional.</p>
+        </div>
+        <div class="module-card reveal">
+          <p class="module-num">Módulo 06</p>
+          <h3>Tendências</h3>
+          <p>Aprenda a fazer topos tendência no mercado e faturar ainda mais fazendo parcerias com confeitarias.</p>
+        </div>
+        <div class="module-card reveal" style="border-color:var(--gold);background:linear-gradient(135deg,#fffbf5,var(--cream));">
+          <p class="module-num">Módulo Exclusivo</p>
+          <h3>Tudo pelo Celular 📱</h3>
+          <p>Não tem computador? Aprenda o passo a passo de como fazer topos de bolo usando apenas o celular como ferramenta de renda.</p>
+        </div>
+        <div class="module-card reveal">
+          <p class="module-num">Certificado</p>
+          <h3>Certificado de Conclusão</h3>
+          <p>Receba seu certificado e divulgue nas redes sociais para conquistar ainda mais credibilidade dos seus clientes.</p>
+        </div>
+        <div class="module-card reveal">
+          <p class="module-num">Suporte</p>
+          <h3>Suporte Particular WhatsApp</h3>
+          <p>Tire todas as suas dúvidas particularmente pelo WhatsApp com uma pessoa altamente treinada para te levar ao próximo nível.</p>
+        </div>
+      </div>
+
+      <div class="cta-center reveal">
+        <a href="https://go.hotmart.com/K106205895D?ap=075c" target="_blank" rel="noopener" class="btn"><span>Quero Acesso Completo ›</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       8. BÔNUS + PREÇO
+  ══════════════════════════════════════════════════════ -->
+  <section class="bonus" id="comprar">
+    <div class="bonus-inner container">
+
+      <!-- Selo de garantia PRIMEIRO -->
+      <div class="garantia-seal-wrap reveal">
+        <div class="garantia-seal">
+          <div class="garantia-seal-bg"></div>
+          <div class="garantia-seal-inner">
+            <span class="seal-top-text">Garantia</span>
+            <span class="seal-number">7</span>
+            <span class="seal-dias">Dias</span>
+            <span class="seal-bottom-text">Garantia</span>
+          </div>
+        </div>
+      </div>
+
+      <span class="section-tag reveal">Oferta especial</span>
+      <div class="gold-ornament reveal" style="margin-bottom:16px;">
+        <span style="background:rgba(201,169,110,0.4)"></span><i style="color:var(--gold)">✦</i><span style="background:rgba(201,169,110,0.4)"></span>
+      </div>
+      <h2 class="section-h2 reveal">Comprando hoje você garante<br><em style="color:var(--gold);font-style:italic;">esses bônus exclusivos:</em></h2>
+
+      <!-- Pricing Card -->
+      <div class="pricing-card reveal">
+
+        <!-- Logo -->
+        <div class="pricing-card-logo">
+          <span>Curso <em>TBL</em></span>
+        </div>
+
+        <!-- Header -->
+        <div class="pricing-card-header">
+          <h3>Investimento Anual</h3>
+        </div>
+
+        <!-- Items -->
+        <ul class="pricing-items">
+          <li><span class="pricing-item-name"><span class="pricing-check">✔</span> Curso TBL completo</span></li>
+          <li><span class="pricing-item-name"><span class="pricing-check">✔</span> Mockups Digitais</span></li>
+          <li><span class="pricing-item-name"><span class="pricing-check">✔</span> Precificação Simplificada com Inteligência Artificial</span></li>
+          <li><span class="pricing-item-name"><span class="pricing-check">✔</span> Canva para negócios com Renata Massa</span></li>
+          <li><span class="pricing-item-name"><span class="pricing-check">✔</span> Marketing Digital com Tatiana Gouvêa</span></li>
+          <li><span class="pricing-item-name"><span class="pricing-check">✔</span> 3 Aulas com Edu Saloti</span></li>
+          <li><span class="pricing-item-name"><span class="pricing-check">✔</span> Caixa Festa na Caixa 100% Tesoura</span></li>
+          <li><span class="pricing-item-name"><span class="pricing-check">✔</span> Drive com arquivos exclusivos e atualizados semanalmente</span></li>
+        </ul>
+
+        <div class="pricing-divider"></div>
+
+        <!-- Totals -->
+        <div class="pricing-total">
+          <p class="pricing-total-was">De R$ 1.433,50</p>
+          <p class="pricing-total-main">por 12x de R$ 8,08</p>
+          <p class="pricing-total-or">ou</p>
+          <p class="pricing-total-cash">R$ 97,00 à vista</p>
+        </div>
+
+        <a href="https://go.hotmart.com/K106205895D?ap=075c" target="_blank" rel="noopener" class="btn btn-hero"><span>Quero Acesso Completo ›</span></a>
+
+      </div>
+
+      <!-- Drive callout -->
+      <div class="drive-callout reveal">
+        <img src="/imagens-depoimentos/drive.png" alt="Drive com arquivos exclusivos" class="drive-img" />
+        <div class="drive-text">
+          <span class="drive-tag">Acesso Exclusivo</span>
+          <h4>Drive atualizado com novidades o ano todo</h4>
+          <p>O Drive com arquivos para as alunas é <strong>atualizado conforme datas comemorativas e tendências do mercado</strong> — você sempre terá conteúdo fresco e relevante para vender mais em cada época do ano.</p>
+        </div>
+      </div>
+
+      <p class="reveal" style="color:rgba(255,255,255,0.4);font-size:12px;margin-top:18px;letter-spacing:0.06em;">Compra 100% segura · Acesso imediato · Garantia de 7 dias</p>
+
+      <!-- Texto de garantia -->
+      <div class="garantia-text-block reveal">
+        <h4>Experimente por 7 dias</h4>
+        <p>Após se inscrever, você terá <strong>7 dias para decidir</strong> se vai ou não continuar com nosso plano de ensino.</p>
+        <p>Se você ver que o Curso TBL não é para você, basta entrar em contato e solicitar o reembolso dentro desse prazo que eu vou <strong>devolver todo o seu investimento sem nenhum questionamento.</strong></p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       9. IMPÉRIO
+  ══════════════════════════════════════════════════════ -->
+  <section class="empire">
+    <div class="container">
+      <span class="section-tag reveal">Sua virada começa aqui</span>
+      <div class="gold-ornament reveal">
+        <span></span><i>✦</i><span></span>
+      </div>
+      <h2 class="section-h2 reveal">O SEGREDO PARA VOCÊ CONSTRUIR<br><em>SEU IMPÉRIO TRABALHANDO EM CASA.</em></h2>
+
+      <p class="empire-text reveal">
+        O Curso TBL vai além de um treinamento online completo e com certificado. Ele é a <strong style="color:var(--mauve);">porta de entrada para sua estabilidade financeira</strong>. Mais de <strong style="color:var(--mauve);">4 mil alunas</strong> passaram a ter uma renda fixa trabalhando com lembrancinhas em suas casas usando apenas o celular.
+      </p>
+
+      <h3 class="reveal" style="font-family:var(--font-display);font-size:clamp(18px,2.5vw,24px);color:var(--mauve2);margin-bottom:28px;">Depoimentos em vídeo:</h3>
+
+      <div class="videos-grid" style="grid-template-columns:repeat(3,1fr);">
+        <img src="/imagens-depoimentos/dep-1.png" alt="Depoimento de aluna 1" style="width:100%;border-radius:16px;display:block;object-fit:cover;" />
+        <img src="/imagens-depoimentos/dep-2.png" alt="Depoimento de aluna 2" style="width:100%;border-radius:16px;display:block;object-fit:cover;" />
+        <img src="/imagens-depoimentos/dep-3.png" alt="Depoimento de aluna 3" style="width:100%;border-radius:16px;display:block;object-fit:cover;" />
+      </div>
+
+      <div class="cta-center reveal">
+        <a href="https://go.hotmart.com/K106205895D?ap=075c" target="_blank" rel="noopener" class="btn"><span>Quero Construir Meu Império ›</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       10. GARANTIA
+  ══════════════════════════════════════════════════════ -->
+  <section class="guarantee">
+    <div class="guarantee-inner reveal">
+      <div class="guarantee-badge">
+        <span class="badge-days">7</span>
+        <span class="badge-text">dias de<br>garantia</span>
+      </div>
+      <div class="guarantee-content">
+        <h2>Você não corre risco algum…</h2>
+        <p>Se você achar que o Curso TBL não é para você, <strong>devolvemos o valor investido</strong> integralmente dentro de 7 dias — sem perguntas, sem burocracia. Você tem total liberdade para experimentar com zero risco.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       11. QUEM SOU EU
+  ══════════════════════════════════════════════════════ -->
+  <section class="about">
+    <div class="container">
+      <span class="section-tag reveal">Conheça quem vai te ensinar</span>
+      <div class="gold-ornament reveal">
+        <span></span><i>✦</i><span></span>
+      </div>
+
+      <div class="about-photo reveal">
+        <img src="/imagens-depoimentos/dep-1.png" alt="Giselle Garcia" />
+      </div>
+
+      <h2 class="about-name reveal">Giselle Garcia</h2>
+      <p class="about-title reveal">Referência em Papelaria Personalizada · Influencer · Criadora do Método TBL</p>
+
+      <p class="about-bio reveal">
+        Giselle Garcia é hoje a <strong>maior referência e influencer em papelaria personalizada</strong> e já conta com centenas de milhares de seguidores e alunas no mundo todo que transformaram o seu negócio em sucesso através de sua metodologia e hoje vivem apenas disso!<br><br>
+        Ela criou esse treinamento passo a passo com certificado para que você possa <strong>sair da estaca zero e se tornar uma profissional reconhecida</strong> que fatura acima da média do mercado.
+      </p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       12. FAQ
+  ══════════════════════════════════════════════════════ -->
+  <section class="faq">
+    <div class="container">
+      <span class="section-tag reveal">Dúvidas frequentes</span>
+      <div class="gold-ornament reveal">
+        <span></span><i>✦</i><span></span>
+      </div>
+      <h2 class="section-h2 reveal">Perguntas <em>Frequentes</em></h2>
+
+      <div class="faq-list reveal">
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Como acesso o curso?
+            <div class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+          </div>
+          <div class="faq-a"><p>O acesso é imediato após o pagamento via pix ou cartão. Você receberá um e-mail com todas as instruções — é importante preencher o e-mail correto no momento da compra.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Quais são as formas de pagamento?
+            <div class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+          </div>
+          <div class="faq-a"><p>Até 12x no cartão de crédito ou no Pix à vista.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Posso parcelar com 2 cartões?
+            <div class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+          </div>
+          <div class="faq-a"><p>Sim! Existe essa opção — basta selecionar no checkout ou chamar no botão do chat em caso de dúvidas.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Quanto tempo dura o curso?
+            <div class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+          </div>
+          <div class="faq-a"><p>O acesso é de um ano com atualização semanal de arquivos e acompanhamento das tendências do mercado, além de suporte particular no WhatsApp. E fique tranquila: após um ano você não precisará comprar novamente — basta efetuar sua renovação por uma taxa irrisória.</p></div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Onde posso tirar minhas dúvidas?
+            <div class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+          </div>
+          <div class="faq-a"><p>Logo na primeira aula você receberá as instruções do número particular do WhatsApp, onde terá atendimento individual de segunda a sexta dentro do horário comercial. <strong>Único curso no Brasil que conta com este recurso!</strong></p></div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Como funciona a garantia?
+            <div class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+          </div>
+          <div class="faq-a"><p>Se durante os 7 dias você ver que o curso não entrega o que prometemos, basta solicitar seu reembolso que ele será atendido — sem perguntas e sem burocracia.</p></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       13. CTA FINAL
+  ══════════════════════════════════════════════════════ -->
+  <section class="final-cta">
+    <div class="final-cta-inner container">
+      <span class="section-tag reveal" style="color:var(--gold)">Última chance</span>
+      <div class="gold-ornament reveal" style="margin-bottom:20px;">
+        <span style="background:rgba(201,169,110,0.4)"></span><i style="color:var(--gold)">✦</i><span style="background:rgba(201,169,110,0.4)"></span>
+      </div>
+      <h2 class="section-h2 reveal">
+        Chegou a hora de<br><em>transformar sua vida</em>
+      </h2>
+
+      <div class="price-block reveal">
+        <p class="price-was">De R$ 1.433,50</p>
+        <p class="price-main">12x de R$ 8,08</p>
+        <p class="price-or">ou</p>
+        <p class="price-cash">R$ 97,00 à vista</p>
+      </div>
+
+      <div class="reveal">
+        <a href="https://go.hotmart.com/K106205895D?ap=075c" target="_blank" rel="noopener" class="btn btn-hero"><span>Garantir Minha Vaga Agora ›</span></a>
+        <p style="color:rgba(255,255,255,0.4);font-size:12px;margin-top:16px;letter-spacing:0.08em;">
+          Compra 100% segura · Acesso imediato · Garantia incondicional de 7 dias
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2024 <span>Curso TBL</span> · Giselle Garcia · Todos os direitos reservados.</p>
+  </footer>
+
+  <script>
+    /* ── FAQ ACCORDION ──────────────────────────────── */
+    function toggleFaq(el) {
+      const item = el.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      // close all
+      document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    }
+
+    /* ── SCROLL REVEAL ──────────────────────────────── */
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          // stagger siblings slightly
+          const siblings = [...entry.target.parentElement.querySelectorAll('.reveal:not(.visible)')];
+          const idx = siblings.indexOf(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, Math.min(idx * 80, 300));
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    revealEls.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
